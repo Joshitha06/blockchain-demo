@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>SHA256 Hash Generator</h1>
+
+<div class="block">
+
+<label>Data</label>
+<textarea id="data" rows="4" oninput="generateHash()"></textarea>
+
+<label>Hash</label>
+<input id="hash" readonly>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+
+function generateHash(){
+
+let data = document.getElementById("data").value
+
+let hash = CryptoJS.SHA256(data).toString()
+
+document.getElementById("hash").value = hash
+
+}
+
+</script>
+
+{% endblock %}

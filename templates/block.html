@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>Block</h1>
+
+<div class="block">
+
+<label>Block</label>
+<input id="block" value="1" readonly>
+
+<label>Nonce</label>
+<input id="nonce" value="0" oninput="updateHash()">
+
+<label>Data</label>
+<textarea id="data" oninput="updateHash()"></textarea>
+
+<label>Prev</label>
+<input id="prev" value="0000000000000000000000000000000000000000000000000000000000000000" readonly>
+
+<label>Hash</label>
+<input id="hash" readonly>
+
+<button onclick="mine()">Mine</button>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+<script>
+
+function calculateHash(block,nonce,data,prev){
+
+let text = block + nonce + data + prev
+return CryptoJS.SHA256(text).toString()
+
+}
+
+function updateHash(){
+
+let block=document.getElementById("block").value
+let nonce=document.getElementById("nonce").value
+let data=document.getElementById("data").value
+let prev=document.getElementById("prev").value
+
+let hash=calculateHash(block,nonce,data,prev)
+
+document.getElementById("hash").value=hash
+
+}
+
+function mine(){
+
+let block=document.getElementById("block").value
+let data=document.getElementById("data").value
+let prev=document.getElementById("prev").value
+
+let nonce=0
+
+while(true){
+
+let hash=calculateHash(block,nonce,data,prev)
+
+if(hash.startsWith("0000")){
+
+document.getElementById("nonce").value=nonce
+document.getElementById("hash").value=hash
+
+break
+
+}
+
+nonce++
+
+}
+
+}
+
+updateHash()
+
+</script>
+
+{% endblock %}
